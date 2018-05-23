@@ -1,0 +1,25 @@
+buildscript {
+    ext {
+        junitVersion = '4.12'
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+group = 'com.soulraven.cromy'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.projectlombok:lombok:1.16.10"
+
+    testCompile ("junit:junit:${junitVersion}")
+}
