@@ -11,6 +11,7 @@ import java.util.Set;
 @Builder
 public class CromyCard {
 
+    private String id;
     private String name;
     //    private String imageUrl;
     private List<CromyStat> stats;

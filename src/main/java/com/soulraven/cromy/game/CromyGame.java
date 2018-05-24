@@ -21,19 +21,16 @@ public class CromyGame {
 
         Stack<CromyCard> shuffled = shuffle(cards); // Perform the initial shuffling.
         for (int i = 0; i < shuffled.size()-1; i++) {
-            // Pop 26 off
             p1Deck.push(shuffled.pop());
-            // Pop 26 off
             p2Deck.push(shuffled.pop());
             i++;
         }
-        // Setup done.
         gameLoop();
     }
 
     static void gameLoop() {
         while (p1Deck.size() + p1Graveyard.size() > 0 && p2Deck.size() + p2Graveyard.size() > 0) { // Main Game Loop
-            CromyCard p1Draw = p1Deck.pop(); // Pop cards
+            CromyCard p1Draw = p1Deck.pop();
             CromyCard p2Draw = p2Deck.pop();
             System.out.println("p1 draws " + p1Draw.toString());
             System.out.println("p2 draws " + p2Draw.toString());
@@ -41,7 +38,7 @@ public class CromyGame {
             if (result == 0) {
                 warBounty.push(p1Draw); // The two tied cards are added to the bounty.
                 warBounty.push(p2Draw);
-                unlessOfCourse(); // War were declared. https://www.youtube.com/watch?v=TS3kiRYcDAo
+                unlessOfCourse(); // War were declared
             }
             checkForShuffleOrEnd(); // Check for shuffle before every new round of draws.
         }
