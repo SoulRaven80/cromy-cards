@@ -90,36 +90,23 @@ public class CromyGame {
     // TODO only weight 4 now
     static int compareDraw(CromyCard p1Draw, CromyCard p2Draw, boolean isWar) {
         CromyStat.StatName name = CromyStat.StatName.WEIGHT;
-        if (p1Draw.getStat(name).getValue() == 1 && p2Draw.getStat(name).getValue() == 14) {
-            System.out.println("p1 takes down an Ace!");
-            if (!isWar) {
-                p1Graveyard.add(p1Draw); // Takes from loser or grants to winner.
-                p1Graveyard.add(p2Draw);
-            }
-            return 1;
-        } else if (p2Draw.getStat(name).getValue() == 1 && p1Draw.getStat(name).getValue() == 14) {
-            System.out.println("p2 takes down an Ace!");
-            if (!isWar) {
-                p2Graveyard.add(p1Draw); // Takes from loser or grants to winner.
-                p2Graveyard.add(p2Draw);
-            }
-            return 2;
-        } else if (p1Draw.getStat(name).getValue() > p2Draw.getStat(name).getValue()) { // Compare to opponent's card, account for Ace Takedown in joker games.
+        if (p1Draw.getStat(name).compareTo(p2Draw.getStat(name)) > 0) { // Compare to opponent's card
             System.out.println("p1 wins the draw!");
             if (!isWar) {
                 p1Graveyard.add(p1Draw); // Takes from loser or grants to winner.
                 p1Graveyard.add(p2Draw);
             }
             return 1;
-        } else if (p2Draw.getStat(name).getValue() > p1Draw.getStat(name).getValue()) { // Compare to opponent's card
+        } else if (p2Draw.getStat(name).compareTo(p1Draw.getStat(name)) > 0) { // Compare to opponent's card
             System.out.println("p2 wins the draw!");
             if (!isWar) {
                 p2Graveyard.add(p1Draw); // Takes from loser or grants to winner.
                 p2Graveyard.add(p2Draw);
             }
             return 2;
-        } else
+        } else {
             return 0;
+        }
     }
 
     static void checkForShuffleOrEnd() {
