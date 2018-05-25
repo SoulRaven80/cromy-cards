@@ -14,7 +14,7 @@ public class CromyDeckTest {
     @Test
     public void testGetCardsSize() {
         List<CromyCard> cards = CromyDeck.getCards();
-        assertEquals("Unexpected list size", 32, cards.size() + 1);
+        assertEquals("Unexpected list size", 32, cards.size());
     }
 
     @Test

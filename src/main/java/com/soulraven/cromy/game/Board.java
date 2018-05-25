@@ -1,14 +1,25 @@
 package com.soulraven.cromy.game;
 
 import com.soulraven.cromy.model.CromyCard;
+import com.soulraven.cromy.model.CromyDeck;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Component
 public class Board {
 
-    private List<CromyCard> p1Deck = new ArrayList<>();
-    private List<CromyCard> p2Deck = new ArrayList<>();
-    private Stack<CromyCard> warBounty = new Stack<>();
+    private List<CromyCard> p1Deck;
+    private List<CromyCard> p2Deck;
+    private Stack<CromyCard> warBounty;
+
+    public Board() {
+        p1Deck = new ArrayList<>();
+        p2Deck = new ArrayList<>();
+        warBounty = new Stack<>();
+
+        initBoard(CromyDeck.getCards());
+    }
 
     public CromyCard drawFromP2() {
         return p2Deck.remove(0);
@@ -18,7 +29,7 @@ public class Board {
         return p1Deck.remove(0);
     }
 
-    public void initBoard(List<CromyCard> cards) {
+    private void initBoard(List<CromyCard> cards) {
         Stack<CromyCard> shuffled = getShuffledStack(cards);
         for (int i = 0; i < shuffled.size()-1; i++) {
             p1Deck.add(0, shuffled.pop());

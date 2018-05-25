@@ -11,7 +11,6 @@ public class ConsoleGame {
     static Board board = new Board();
 
     public static void main(String[] args) throws IOException {
-        board.initBoard(CromyDeck.getCards());
         gameLoop();
     }
 
