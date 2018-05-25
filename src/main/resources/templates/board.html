@@ -5,6 +5,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<p th:text="'Hello, ' + ${card} + '!'" />
+<p th:text="${card.name}" />
+<p th:text="---------------------" />
+<table>
+    <tr th:each="stat: ${card.stats}">
+        <td th:text="${stat.statName.name} + ': ' + ${stat.value}"></td>
+    </tr>
+</table>
+
+<form action="#" th:action="@{/selectCard}" th:object="${gameForm}" method="post">
+    <!--<input type="hidden" th:field="${gameForm.card}" th:value="${card}" />-->
+    <select th:field="${gameForm.statName}">
+        <option th:each="stat: ${card.stats}" th:utext="${stat.statName.name}" th:value="${stat.statName.name}" />
+    </select>
+    <input type="submit" value="Send" />
+</form>
+<!--<img th:src="@{'/images/' + ${card.id} + '.jpg'}" />-->
 </body>
 </html>

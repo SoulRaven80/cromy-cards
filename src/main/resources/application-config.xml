@@ -20,25 +20,40 @@
     <mvc:resources location="/static/images/" mapping="/images/**" />
     <mvc:resources location="/static/css/" mapping="/css/**" />
 
+    <!-- **************************************************************** -->
+    <!--  CONVERSION SERVICE                                              -->
+    <!--  Standard Spring formatting-enabled implementation               -->
+    <!-- **************************************************************** -->
+    <bean id="conversionService"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <!--<property name="formatters">-->
+            <!--<set>-->
+                <!--<bean class="thymeleafexamples.stsm.web.conversion.VarietyFormatter" />-->
+                <!--<bean class="thymeleafexamples.stsm.web.conversion.DateFormatter" />-->
+            <!--</set>-->
+        <!--</property>-->
+    </bean>
+
 
     <!-- **************************************************************** -->
     <!--  THYMELEAF-SPECIFIC ARTIFACTS                                    -->
     <!--  TemplateResolver <- TemplateEngine <- ViewResolver              -->
     <!-- **************************************************************** -->
 
-    <!--<bean id="templateResolver"-->
-          <!--class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">-->
-        <!--<property name="prefix" value="/WEB-INF/templates/" />-->
-        <!--<property name="suffix" value=".html" />-->
+    <bean id="templateResolver"
+          class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/templates/" />
+        <property name="suffix" value=".html" />
         <!--<property name="templateMode" value="HTML5" />-->
-    <!--</bean>-->
+    </bean>
 
-    <!--<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">-->
-        <!--<property name="templateResolver" ref="templateResolver" />-->
-    <!--</bean>-->
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver" />
+    </bean>
 
-    <!--<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">-->
-        <!--<property name="templateEngine" ref="templateEngine" />-->
-    <!--</bean>-->
+    <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine" />
+    </bean>
 
 </beans>

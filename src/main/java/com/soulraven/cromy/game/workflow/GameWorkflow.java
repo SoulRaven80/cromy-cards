@@ -1,22 +1,36 @@
-package com.soulraven.cromy.game;
+package com.soulraven.cromy.game.workflow;
 
+import com.soulraven.cromy.game.Board;
+import com.soulraven.cromy.game.workflow.state.ComparisonState;
+import com.soulraven.cromy.game.workflow.state.InitialState;
+import com.soulraven.cromy.game.workflow.state.State;
 import com.soulraven.cromy.model.CromyCard;
-import com.soulraven.cromy.model.CromyDeck;
 import com.soulraven.cromy.model.CromyStat;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class ConsoleGame {
+@Component
+public class GameWorkflow {
 
-    static Board board = new Board();
+    @Autowired
+    private Board board;
+    private List<State> states;
 
-    public static void main(String[] args) throws IOException {
-        gameLoop();
+    public GameWorkflow() {
+        this.states = new ArrayList<>();
+        states.add(new InitialState(board));
+//        states.add(new ComparisonState(board));
     }
 
-    static void gameLoop() throws IOException {
+    public void run() throws IOException {
         while (board.p1HasCards() && board.p2HasCards()) { // Main Game Loop
+            states.get(0).execute();
+
             CromyCard p1Draw = board.drawFromP1();
             System.out.println("p1 draws " + p1Draw.toString());
 
