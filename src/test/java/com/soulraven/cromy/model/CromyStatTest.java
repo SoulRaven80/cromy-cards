@@ -12,17 +12,11 @@ public class CromyStatTest {
 
     @Test
     public void compareToMin() {
-
         CromyStat first = CromyStat.builder().statName(CromyStat.StatName.WEIGHT).value(1).build();
         CromyStat second = CromyStat.builder().statName(CromyStat.StatName.WEIGHT).value(200).build();
 
-        List<CromyStat> stats = new ArrayList<>();
-        stats.add(first);
-        stats.add(second);
-
-        Collections.sort(stats);
-
-        assertEquals("Unexpected object found", first, stats.get(0));
+        assertEquals("Unexpected comparison", 1, first.compareTo(second));
+        assertEquals("Unexpected comparison", -1, second.compareTo(first));
     }
 
     @Test
@@ -31,13 +25,18 @@ public class CromyStatTest {
         CromyStat first = CromyStat.builder().statName(CromyStat.StatName.STRENGTH).value(1).build();
         CromyStat second = CromyStat.builder().statName(CromyStat.StatName.STRENGTH).value(200).build();
 
-        List<CromyStat> stats = new ArrayList<>();
-        stats.add(first);
-        stats.add(second);
+        assertEquals("Unexpected comparison", -1, first.compareTo(second));
+        assertEquals("Unexpected comparison", 1, second.compareTo(first));
+    }
 
-        Collections.sort(stats);
+    @Test
+    public void compareToEqual() {
 
-        assertEquals("Unexpected object found", second, stats.get(0));
+        CromyStat first = CromyStat.builder().statName(CromyStat.StatName.STRENGTH).value(10).build();
+        CromyStat second = CromyStat.builder().statName(CromyStat.StatName.STRENGTH).value(10).build();
+
+        assertEquals("Unexpected comparison", 0, first.compareTo(second));
+        assertEquals("Unexpected comparison", 0, second.compareTo(first));
     }
 
     @Test(expected = IllegalArgumentException.class)

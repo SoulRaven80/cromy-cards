@@ -17,22 +17,21 @@ public class CromyStat implements Comparable<CromyStat> {
             throw new IllegalArgumentException("Cannot compare " + statName.getName() + " with " + other.statName.getName());
         }
         if (statName.statType == StatName.StatType.MIN_WINS) {
+            if (value - other.value < 0) {
+                return 1;
+            }
+            else if (value - other.value > 0) {
+                return -1;
+            }
+        } else {
             if (value - other.value > 0) {
                 return 1;
             }
             else if (value - other.value < 0) {
                 return -1;
             }
-            return 0;
-        } else {
-            if (other.value - value > 0) {
-                return 1;
-            }
-            else if (other.value - value < 0) {
-                return -1;
-            }
-            return 0;
         }
+        return 0;
     }
 
     @Getter
