@@ -1,11 +1,9 @@
 package com.soulraven.cromy.game;
 
 import com.soulraven.cromy.model.CromyCard;
-import lombok.Getter;
 
 import java.util.*;
 
-//@Getter
 public class Board {
 
     private List<CromyCard> p1Deck = new ArrayList<>();

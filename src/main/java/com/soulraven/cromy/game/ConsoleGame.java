@@ -4,25 +4,40 @@ import com.soulraven.cromy.model.CromyCard;
 import com.soulraven.cromy.model.CromyDeck;
 import com.soulraven.cromy.model.CromyStat;
 
-public class CromyGame {
+import java.io.IOException;
+import java.util.Scanner;
+
+public class ConsoleGame {
     static Board board = new Board();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         board.initBoard(CromyDeck.getCards());
         gameLoop();
     }
 
-    static void gameLoop() {
+    static void gameLoop() throws IOException {
         while (board.p1HasCards() && board.p2HasCards()) { // Main Game Loop
             CromyCard p1Draw = board.drawFromP1();
-            CromyCard p2Draw = board.drawFromP2();
             System.out.println("p1 draws " + p1Draw.toString());
+
+            System.out.println("Select skill:");
+            System.out.println("1: Height");
+            System.out.println("2: Weight");
+            System.out.println("3: Strength");
+            System.out.println("4: Speed");
+            System.out.println("5: Transformation Speed");
+            Scanner scanner = new Scanner(System.in);
+            int read = scanner.nextInt();
+
+            CromyStat.StatName statName = getStat(read);
+
+            CromyCard p2Draw = board.drawFromP2();
             System.out.println("p2 draws " + p2Draw.toString());
-            int result = compareDraw(p1Draw, p2Draw, false);
+            int result = compareDraw(p1Draw, p2Draw, statName, false);
             if (result == 0) {
                 board.addToBounty(p1Draw); // The two tied cards are added to the bounty.
                 board.addToBounty(p2Draw);
-                if (warWasDeclared() == 1) {
+                if (warWasDeclared(statName) == 1) {
                     board.claimBountyRewardP1();
                 } else {
                     board.claimBountyRewardP2();
@@ -32,7 +47,7 @@ public class CromyGame {
         }
     }
 
-    static int warWasDeclared() { // Returns the winner of the war as an integer.
+    static int warWasDeclared(CromyStat.StatName statName) { // Returns the winner of the war as an integer.
         checkGameOver(); // We have to check for shuffle before every draw.
         CromyCard p1Draw = board.drawFromP1(); // Pop cards
         CromyCard p2Draw = board.drawFromP2();
@@ -40,7 +55,7 @@ public class CromyGame {
         System.out.println("p2 draws " + p2Draw.toString());
         board.addToBounty(p1Draw);
         board.addToBounty(p2Draw);
-        int result = compareDraw(p1Draw, p2Draw, true);
+        int result = compareDraw(p1Draw, p2Draw, statName, true);
         if (result == 1) {
             System.out.println("p1 wins the war!");
             return 1;
@@ -50,21 +65,20 @@ public class CromyGame {
             return 2;
         } else {
             System.out.println("It's another level of war!");
-            return warWasDeclared(); // recursive call
+            return warWasDeclared(statName); // recursive call
         }
     }
 
     // TODO only random for now
-    static int compareDraw(CromyCard p1Draw, CromyCard p2Draw, boolean isWar) {
-        CromyStat.StatName name = getRandomStat();
-        System.out.println("Playing with " + name);
-        if (p1Draw.getStat(name).compareTo(p2Draw.getStat(name)) > 0) { // Compare to opponent's card
+    static int compareDraw(CromyCard p1Draw, CromyCard p2Draw, CromyStat.StatName statName, boolean isWar) {
+        System.out.println("Playing with " + statName);
+        if (p1Draw.getStat(statName).compareTo(p2Draw.getStat(statName)) > 0) { // Compare to opponent's card
             System.out.println("p1 wins the draw!");
             if (!isWar) {
                 board.claimRoundRewardP1(p1Draw, p2Draw);
             }
             return 1;
-        } else if (p2Draw.getStat(name).compareTo(p1Draw.getStat(name)) > 0) { // Compare to opponent's card
+        } else if (p2Draw.getStat(statName).compareTo(p1Draw.getStat(statName)) > 0) { // Compare to opponent's card
             System.out.println("p2 wins the draw!");
             if (!isWar) {
                 board.claimRoundRewardP2(p1Draw, p2Draw);
@@ -88,13 +102,12 @@ public class CromyGame {
         }
     }
 
-    private static CromyStat.StatName getRandomStat() {
-        int value = (int) (Math.random() * 5);
-        switch (value) {
-            case 0: return CromyStat.StatName.HEIGHT;
-            case 1: return CromyStat.StatName.WEIGHT;
-            case 2: return CromyStat.StatName.STRENGTH;
-            case 3: return CromyStat.StatName.SPEED;
+    private static CromyStat.StatName getStat(int number) {
+        switch (number) {
+            case 1: return CromyStat.StatName.HEIGHT;
+            case 2: return CromyStat.StatName.WEIGHT;
+            case 3: return CromyStat.StatName.STRENGTH;
+            case 4: return CromyStat.StatName.SPEED;
             default: return CromyStat.StatName.TRANSFORMATION_SPEED;
         }
     }
