@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<table>
+    <tr>
+        <td colspan="2">
+            <h2 th:text="Game over" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p th:text="'Player ' + ${winner.number} + 'won the game!'" />
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

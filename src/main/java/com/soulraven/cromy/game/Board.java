@@ -2,62 +2,72 @@ package com.soulraven.cromy.game;
 
 import com.soulraven.cromy.model.CromyCard;
 import com.soulraven.cromy.model.CromyDeck;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 
 @Component
+@Getter
 public class Board {
 
-    private List<CromyCard> p1Deck;
-    private List<CromyCard> p2Deck;
+    private Player p1;
+    private Player p2;
     private Stack<CromyCard> warBounty;
 
     public Board() {
-        p1Deck = new ArrayList<>();
-        p2Deck = new ArrayList<>();
         warBounty = new Stack<>();
-
+        p1 = Player.builder().number("1").cards(new ArrayList<>()).build();
+        p2 = Player.builder().number("2").cards(new ArrayList<>()).build();
         initBoard(CromyDeck.getCards());
     }
 
     public CromyCard drawFromP2() {
-        return p2Deck.remove(0);
+        return p2.draw();
     }
 
     public CromyCard drawFromP1() {
-        return p1Deck.remove(0);
+        return p1.draw();
     }
 
     private void initBoard(List<CromyCard> cards) {
         Stack<CromyCard> shuffled = getShuffledStack(cards);
-        for (int i = 0; i < shuffled.size()-1; i++) {
-            p1Deck.add(0, shuffled.pop());
-            p2Deck.add(0, shuffled.pop());
+        for (int i = 0; i < shuffled.size() - 1; i++) {
+            p1.getCards().add(0, shuffled.pop());
+            p2.getCards().add(0, shuffled.pop());
             i++;
+        }
+    }
+
+    public void claimBountyReward(Player player) {
+        while (!emptyBounty()) {
+            player.getCards().add(warBounty.pop());
         }
     }
 
     public void claimBountyRewardP1() {
         while (!emptyBounty()) {
-            p1Deck.add(warBounty.pop());
+            p1.getCards().add(warBounty.pop());
         }
     }
 
     public void claimBountyRewardP2() {
         while (!emptyBounty()) {
-            p2Deck.add(warBounty.pop());
+            p2.getCards().add(warBounty.pop());
         }
     }
 
     public void claimRoundRewardP1(CromyCard card1, CromyCard card2) {
-        p1Deck.add(card1);
-        p1Deck.add(card2);
+        p1.getCards().add(card1);
+        p1.getCards().add(card2);
     }
 
     public void claimRoundRewardP2(CromyCard card1, CromyCard card2) {
-        p2Deck.add(card1);
-        p2Deck.add(card2);
+        p2.getCards().add(card1);
+        p2.getCards().add(card2);
     }
 
     public boolean emptyBounty() {
@@ -69,11 +79,11 @@ public class Board {
     }
 
     public boolean p1HasCards() {
-        return !p1Deck.isEmpty();
+        return !p1.getCards().isEmpty();
     }
 
     public boolean p2HasCards() {
-        return !p2Deck.isEmpty();
+        return !p2.getCards().isEmpty();
     }
 
     private Stack<CromyCard> getShuffledStack(List<CromyCard> cards) {

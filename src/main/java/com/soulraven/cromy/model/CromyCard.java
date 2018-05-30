@@ -2,11 +2,9 @@ package com.soulraven.cromy.model;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -15,26 +13,26 @@ public class CromyCard {
     private String id;
     private String name;
     //    private String imageUrl;
-    private List<CromyStat> stats;
+    private List<CromySkill> skills;
 
-    public CromyStat getStat(String statName) {
-        Iterator<CromyStat> iterator = stats.iterator();
+    public CromySkill getSkill(String statName) {
+        Iterator<CromySkill> iterator = skills.iterator();
         while (iterator.hasNext()) {
-            CromyStat next = iterator.next();
-            if (next.getStatName().getName().equals(statName)) {
+            CromySkill next = iterator.next();
+            if (next.getSkillName().getName().equals(statName)) {
                 return next;
             }
         }
-        throw new IllegalArgumentException("Invalid StatName: " + name);
+        throw new IllegalArgumentException("Invalid SkillName: " + name);
     }
-    public CromyStat getStat(CromyStat.StatName name) {
-        Iterator<CromyStat> iterator = stats.iterator();
+    public CromySkill getSkill(CromySkill.SkillName name) {
+        Iterator<CromySkill> iterator = skills.iterator();
         while (iterator.hasNext()) {
-            CromyStat next = iterator.next();
-            if (next.getStatName().getName().equals(name.getName())) {
+            CromySkill next = iterator.next();
+            if (next.getSkillName().getName().equals(name.getName())) {
                 return next;
             }
         }
-        throw new IllegalArgumentException("Invalid StatName: " + name);
+        throw new IllegalArgumentException("Invalid SkillName: " + name);
     }
 }

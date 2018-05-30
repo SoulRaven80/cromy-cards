@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class GameForm {
 
-    private CromyCard card;
-    private String statName;
+    private String cardId;
+    private String skillName;
 }

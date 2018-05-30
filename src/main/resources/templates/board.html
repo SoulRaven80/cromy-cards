@@ -5,21 +5,40 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<p th:text="${card.name}" />
-<p th:text="---------------------" />
+
 <table>
-    <tr th:each="stat: ${card.stats}">
-        <td th:text="${stat.statName.name} + ': ' + ${stat.value}"></td>
+    <tr>
+        <td colspan="2">
+            <p th:text="${card.name}" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <span th:text="---------------------" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table>
+                <tr th:each="skill: ${card.skills}">
+                    <td th:text="${skill.skillName.name} + ': ' + ${skill.value}"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <form action="#" th:action="@{/selectCard}" th:object="${gameForm}" method="post">
+                <input type="hidden" th:field="${gameForm.cardId}" th:value="${card.id}" />
+                <select th:field="${gameForm.skillName}">
+                    <option th:each="skill: ${card.skills}" th:utext="${skill.skillName.name}" th:value="${skill.skillName.name}" />
+                </select>
+                <input type="submit" value="Send" />
+            </form>
+            <!--<img th:src="@{'/images/' + ${card.id} + '.jpg'}" />-->
+        </td>
     </tr>
 </table>
 
-<form action="#" th:action="@{/selectCard}" th:object="${gameForm}" method="post">
-    <!--<input type="hidden" th:field="${gameForm.card}" th:value="${card}" />-->
-    <select th:field="${gameForm.statName}">
-        <option th:each="stat: ${card.stats}" th:utext="${stat.statName.name}" th:value="${stat.statName.name}" />
-    </select>
-    <input type="submit" value="Send" />
-</form>
-<!--<img th:src="@{'/images/' + ${card.id} + '.jpg'}" />-->
 </body>
 </html>

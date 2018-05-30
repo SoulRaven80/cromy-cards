@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<table>
+    <tr>
+        <td>
+            <p th:text="${p1Draw.name}" />
+        </td>
+        <td>
+            <p th:text="${p2Draw.name}" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span th:text="---------------------" />
+        </td>
+        <td>
+            <span th:text="---------------------" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table>
+                <tr th:each="skill: ${p1Draw.skills}">
+                    <td th:text="${skill.skillName.name} + ': ' + ${skill.value}"></td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <table>
+                <tr th:each="skill: ${p2Draw.skills}">
+                    <td th:text="${skill.skillName.name} + ': ' + ${skill.value}"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <select>
+                <option th:each="stat: ${skill.skillName.name}" th:utext="${skill.skillName.name}" />
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p th:text="Tied!" />
+        </td>
+    </tr>
+</table>
+<form action="#" th:action="@{/tied}" method="get">
+    <input type="hidden" th:field="${gameForm.skillName}" th:value="${gameForm.skillName}" />
+    <input type="submit" value="Draw next" />
+</form>
+
+</body>
+</html>
