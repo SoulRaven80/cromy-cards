@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CromyDeck {
+public final class CromyDeck {
 
     private static Map<String, CromyCard> cards;
     static {
@@ -43,6 +43,8 @@ public class CromyDeck {
         addCard(3.7, 4, 230, 130, 2.7, "H3", "Longhaul");
         addCard(5.1, 7, 90, 11, 1.9, "H4", "Bombshell");
     }
+
+    private CromyDeck() {}
 
     public static List<CromyCard> getCards() {
         return new ArrayList<>(cards.values());

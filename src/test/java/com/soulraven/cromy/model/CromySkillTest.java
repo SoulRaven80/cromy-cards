@@ -30,10 +30,20 @@ public class CromySkillTest {
     }
 
     @Test
-    public void compareToEqual() {
+    public void compareToEqualMax() {
 
         CromySkill first = CromySkill.builder().skillName(CromySkill.SkillName.STRENGTH).value(10).build();
         CromySkill second = CromySkill.builder().skillName(CromySkill.SkillName.STRENGTH).value(10).build();
+
+        assertEquals("Unexpected comparison", 0, first.compareTo(second));
+        assertEquals("Unexpected comparison", 0, second.compareTo(first));
+    }
+
+    @Test
+    public void compareToEqualMin() {
+
+        CromySkill first = CromySkill.builder().skillName(CromySkill.SkillName.TRANSFORMATION_SPEED).value(1.1).build();
+        CromySkill second = CromySkill.builder().skillName(CromySkill.SkillName.TRANSFORMATION_SPEED).value(1.1).build();
 
         assertEquals("Unexpected comparison", 0, first.compareTo(second));
         assertEquals("Unexpected comparison", 0, second.compareTo(first));
