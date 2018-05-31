@@ -4,20 +4,24 @@
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-<body>
+<body style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/34/Tiled_brick_wall.jpg')">
 
 <table>
     <tr>
         <td colspan="2">
-            <h2 th:text="Game over" />
+            <h2>Game over</h2>
         </td>
     </tr>
     <tr>
         <td colspan="2">
-            <p th:text="'Player ' + ${winner.number} + 'won the game!'" />
+            <p th:text="'Player ' + ${winner.number} + ' won the game!'" />
         </td>
     </tr>
 </table>
+
+<form action="#" th:action="@{/startNewGame}" method="get">
+    <input type="submit" value="Start New Game" />
+</form>
 
 </body>
 </html>

@@ -3,52 +3,75 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" th:src="@{'/js/jquery.1.7.2.min.js'}"></script>
+    <script type="text/javascript" th:src="@{'/js/jquery.imagemapster.min.js'}"></script>
 </head>
-<body>
+<body style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/34/Tiled_brick_wall.jpg')">
 
-<table>
+<table cellspacing="10" cellpadding="10">
     <tr>
         <td>
-            <p th:text="${p1Draw.name}" />
+            <h2 th:text="'Player ' + ${p1Number}" />
         </td>
         <td>
-            <p th:text="${p2Draw.name}" />
+            <h2 th:text="'Player ' + ${p2Number}" />
         </td>
     </tr>
     <tr>
         <td>
-            <span th:text="---------------------" />
+            <span th:text="'Decks in card: ' + ${p1DeckSize}" />
         </td>
         <td>
-            <span th:text="---------------------" />
+            <span th:text="'Decks in card: ' + ${p2DeckSize}" />
         </td>
     </tr>
     <tr>
         <td>
-            <table>
-                <tr th:each="skill: ${p1Draw.skills}">
-                    <td th:text="${skill.skillName.name} + ': ' + ${skill.value}"></td>
-                </tr>
-            </table>
+            <img th:id="p1Card" th:src="@{'/images/' + ${p1Draw.id} + '.jpg'}" th:width="254" th:height="400" usemap="#optionsMap1" />
+
+            <map name="optionsMap1" th:border="1">
+                <area shape="rect" coords="32,620,468,642" href="#" th:if="${skill.skillName.name} == 'Height'" />
+                <area shape="rect" coords="32,650,468,672" href="#" th:if="${skill.skillName.name} == 'Weight'" />
+                <area shape="rect" coords="32,680,468,702" href="#" th:if="${skill.skillName.name} == 'Strength'" />
+                <area shape="rect" coords="32,710,468,732" href="#" th:if="${skill.skillName.name} == 'Speed'" />
+                <area shape="rect" coords="32,740,468,762" href="#" th:if="${skill.skillName.name} == 'Transformation Speed'" />
+            </map>
+            <script>
+                $('#p1Card').mapster({
+                    stroke: true,
+                    strokeColor: 'ff0000',
+                    strokeOpacity: 1,
+                    strokeWidth: 1,
+                    staticState: true,
+                    fill: false
+                });
+            </script>
         </td>
         <td>
-            <table>
-                <tr th:each="skill: ${p2Draw.skills}">
-                    <td th:text="${skill.skillName.name} + ': ' + ${skill.value}"></td>
-                </tr>
-            </table>
+            <img th:id="p2Card" th:src="@{'/images/' + ${p2Draw.id} + '.jpg'}" th:width="254" th:height="400" usemap="#optionsMap2" />
+
+            <map name="optionsMap2" th:border="1">
+                <area shape="rect" coords="32,620,468,642" href="#" th:if="${skill.skillName.name} == 'Height'" />
+                <area shape="rect" coords="32,650,468,672" href="#" th:if="${skill.skillName.name} == 'Weight'" />
+                <area shape="rect" coords="32,680,468,702" href="#" th:if="${skill.skillName.name} == 'Strength'" />
+                <area shape="rect" coords="32,710,468,732" href="#" th:if="${skill.skillName.name} == 'Speed'" />
+                <area shape="rect" coords="32,740,468,762" href="#" th:if="${skill.skillName.name} == 'Transformation Speed'" />
+            </map>
+            <script>
+                $('#p2Card').mapster({
+                    stroke: true,
+                    strokeColor: 'ff0000',
+                    strokeOpacity: 1,
+                    strokeWidth: 1,
+                    staticState: true,
+                    fill: false
+                });
+            </script>
         </td>
     </tr>
     <tr>
         <td colspan="2">
-            <select>
-                <option th:each="stat: ${skill.skillName.name}" th:utext="${skill.skillName.name}" />
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <p th:text="'Player ' + ${result} + 'won!'" />
+            <p th:text="'Player ' + ${result} + ' won!'" />
         </td>
     </tr>
 </table>

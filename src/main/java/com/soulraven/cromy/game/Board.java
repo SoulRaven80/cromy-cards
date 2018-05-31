@@ -19,10 +19,14 @@ public class Board {
     private Stack<CromyCard> warBounty;
 
     public Board() {
+        init();
+    }
+
+    public void init() {
         warBounty = new Stack<>();
         p1 = Player.builder().number("1").cards(new ArrayList<>()).build();
         p2 = Player.builder().number("2").cards(new ArrayList<>()).build();
-        initBoard(CromyDeck.getCards());
+        setPlayersDecks(CromyDeck.getCards());
     }
 
     public CromyCard drawFromP2() {
@@ -33,12 +37,11 @@ public class Board {
         return p1.draw();
     }
 
-    private void initBoard(List<CromyCard> cards) {
+    private void setPlayersDecks(List<CromyCard> cards) {
         Stack<CromyCard> shuffled = getShuffledStack(cards);
-        for (int i = 0; i < shuffled.size() - 1; i++) {
+        for (int i = 0; i < (cards.size() / 2); i++) {
             p1.getCards().add(0, shuffled.pop());
             p2.getCards().add(0, shuffled.pop());
-            i++;
         }
     }
 
@@ -76,6 +79,10 @@ public class Board {
 
     public void addToBounty(CromyCard card) {
         warBounty.push(card);
+    }
+
+    public int deckSize(Player player) {
+        return player.getCards().size();
     }
 
     public boolean p1HasCards() {

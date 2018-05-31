@@ -1,41 +1,81 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<link>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" th:src="@{'/js/jquery.1.7.2.min.js'}"></script>
+    <script type="text/javascript" th:src="@{'/js/jquery.imagemapster.min.js'}"></script>
+    <script type="text/javascript">
+        var xref = [
+            'Height',
+            'Weight',
+            'Strength',
+            'Speed',
+            'Transformation Speed'
+        ];
+        function postForm(value) {
+            document.getElementById('formSkillName').value = value;
+            document.getElementById('formSelect').submit();
+        }
+    </script>
 </head>
-<body>
+<body style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/34/Tiled_brick_wall.jpg')">
 
-<table>
+<table cellspacing="10" cellpadding="10">
     <tr>
-        <td colspan="2">
-            <p th:text="${card.name}" />
+        <td>
+            <h2 th:text="'Player ' + ${p1Number}" />
+        </td>
+        <td>
+            <h2 th:text="'Player ' + ${p2Number}" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span th:text="'Decks in card: ' + ${p1DeckSize}" />
+        </td>
+        <td>
+            <span th:text="'Decks in card: ' + ${p2DeckSize}" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img th:id="p1Card" th:src="@{'/images/' + ${card.id} + '.jpg'}" th:width="254" th:height="400" usemap="#optionsMap" />
+            <map name="optionsMap" th:border="1">
+                <area name="area1" shape="rect" coords="32,620,468,642" href="#" />
+                <area name="area2" shape="rect" coords="32,650,468,672" href="#" />
+                <area name="area3" shape="rect" coords="32,680,468,702" href="#" />
+                <area name="area4" shape="rect" coords="32,710,468,732" href="#" />
+                <area name="area5" shape="rect" coords="32,740,468,762" href="#" />
+            </map>
+            <script>
+                $('#p1Card').mapster({
+                    stroke: false,
+                    // strokeColor: 'ff0000',
+                    // strokeOpacity: 1,
+                    // strokeWidth: 1,
+                    // staticState: true,
+                    fill: false,
+                    onClick: function (e) {
+                        postForm(xref[e.key]);
+                    }
+                });
+            </script>
+        </td>
+        <td>
+            <img th:src="@{'/images/Deck.jpg'}" th:height="400" th:width="254" />
         </td>
     </tr>
     <tr>
         <td colspan="2">
-            <span th:text="---------------------" />
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <table>
-                <tr th:each="skill: ${card.skills}">
-                    <td th:text="${skill.skillName.name} + ': ' + ${skill.value}"></td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <form action="#" th:action="@{/selectCard}" th:object="${gameForm}" method="post">
-                <input type="hidden" th:field="${gameForm.cardId}" th:value="${card.id}" />
-                <select th:field="${gameForm.skillName}">
-                    <option th:each="skill: ${card.skills}" th:utext="${skill.skillName.name}" th:value="${skill.skillName.name}" />
-                </select>
-                <input type="submit" value="Send" />
+            <form action="#" id="formSelect" th:action="@{/selectCard}" th:object="${gameForm}" method="post">
+                <input type="hidden" th:field="${gameForm.cardId}" id="formCardId" th:value="${card.id}" />
+                <input type="hidden" th:field="${gameForm.skillName}" id="formSkillName" />
+                <!--<select th:field="${gameForm.skillName}">-->
+                    <!--<option th:each="skill: ${card.skills}" th:utext="${skill.skillName.name}" th:value="${skill.skillName.name}" />-->
+                <!--</select>-->
+                <!--<input type="submit" value="Send" />-->
             </form>
-            <!--<img th:src="@{'/images/' + ${card.id} + '.jpg'}" />-->
         </td>
     </tr>
 </table>

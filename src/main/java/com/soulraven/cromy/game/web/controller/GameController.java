@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class GameController {
@@ -20,13 +19,19 @@ public class GameController {
     @Autowired
     private Board board;
 
+    @GetMapping("/startNewGame")
+    public String startNewGame(Model model) {
+        board.init();
+        return board(model);
+    }
+
     @GetMapping("/board")
     public String board(Model model) {
         if (checkGameOver(board.getP1())) {
-            model.addAttribute("winner", board.getP1());
+            model.addAttribute("winner", board.getP2());
         }
         else if (checkGameOver(board.getP2())) {
-            model.addAttribute("winner", board.getP2());
+            model.addAttribute("winner", board.getP1());
         }
         else {
             CromyCard card = board.drawFromP1();
@@ -34,7 +39,7 @@ public class GameController {
             model.addAttribute("card", card);
             GameForm gameForm = new GameForm();
             gameForm.setCardId(card.getId());
-            model.addAttribute("gameForm", gameForm);
+            setCommonAttributes(model, gameForm);
             return "board";
         }
         return "gameOver";
@@ -55,11 +60,9 @@ public class GameController {
 
             int result = compareDraw(p1Draw, p2Draw, skill.getSkillName(), true);
 
-            model.addAttribute("p1Draw", p1Draw);
-            model.addAttribute("skill", skill);
-            model.addAttribute("p2Draw", p2Draw);
-            model.addAttribute("gameForm", gameForm);
+            addDrawsAttributes(model, p1Draw, p2Draw, skill);
 
+            setCommonAttributes(model, gameForm);
             if (result > 0) {
                 model.addAttribute("result", result);
                 return "bothDrawn";
@@ -77,16 +80,28 @@ public class GameController {
 
         int result = compareDraw(p1Draw, p2Draw, skill.getSkillName(), false);
 
-        model.addAttribute("p1Draw", p1Draw);
-        model.addAttribute("skill", skill);
-        model.addAttribute("p2Draw", p2Draw);
-        model.addAttribute("gameForm", gameForm);
+        addDrawsAttributes(model, p1Draw, p2Draw, skill);
 
+        setCommonAttributes(model, gameForm);
         if (result > 0) {
             model.addAttribute("result", result);
             return "bothDrawn";
         }
         return "tied";
+    }
+
+    private void setCommonAttributes(Model model, GameForm gameForm) {
+        model.addAttribute("p1DeckSize", board.deckSize(board.getP1()));
+        model.addAttribute("p2DeckSize", board.deckSize(board.getP2()));
+        model.addAttribute("p1Number", board.getP1().getNumber());
+        model.addAttribute("p2Number", board.getP2().getNumber());
+        model.addAttribute("gameForm", gameForm);
+    }
+
+    private void addDrawsAttributes(Model model, CromyCard p1Draw, CromyCard p2Draw, CromySkill skill) {
+        model.addAttribute("p1Draw", p1Draw);
+        model.addAttribute("skill", skill);
+        model.addAttribute("p2Draw", p2Draw);
     }
 
     private int compareDraw(CromyCard p1Draw, CromyCard p2Draw, CromySkill.SkillName skillName, boolean isWar) {
